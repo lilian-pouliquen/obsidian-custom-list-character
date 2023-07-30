@@ -1,0 +1,7 @@
+.idea/
+.vscode/
+.pnpm-store/
+build/
+node_modules/
+
+.iml

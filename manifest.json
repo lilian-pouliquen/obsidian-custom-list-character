@@ -1,0 +1,11 @@
+{
+	"id": "custom-list-character",
+	"name": "Custom list character",
+	"version": "1.0.0",
+	"minAppVersion": "0.15.0",
+	"description": "Plugin that adds the ability to choose the character to use when creating a bullet list between '-', '*' and '+'",
+	"author": "Lilian POULIQUEN",
+	"authorUrl": "https://github.com/lilian-pouliquen/",
+	"fundingUrl": "",
+	"isDesktopOnly": true
+}
