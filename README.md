@@ -1,15 +1,26 @@
-# Custom list character
+# Custom list character <!-- omit in toc -->
 
-## Introduction
+## Table of content <!-- omit in toc -->
 
-Custom list character is a simple plugin allowing you to choose which character to use when making bullet lists in Obsidian.
+* [1. Introduction](#1-introduction)
+* [2. Demo](#2-demo)
+* [3. Install the plugin](#3-install-the-plugin)
+  * [3.1. Installatin through Obsidian](#31-installatin-through-obsidian)
+  * [3.2. Manual installation](#32-manual-installation)
+  * [3.3. Mobile set up](#33-mobile-set-up)
+* [4. Help on the project](#4-help-on-the-project)
+* [5. Author](#5-author)
+
+## 1. Introduction
+
+`Custom list character` is a simple plugin allowing you to choose which character to use when making bullet lists in Obsidian.
 
 It adds the following features:
 
 * new settings to choose the wanted charater between `-` (default), `*` and `+`
 * new hotkey to bind to use the selected character to make or format your bullet lists
 
-## Demo
+## 2. Demo
 
 1. Choose your character!
 
@@ -23,9 +34,9 @@ It adds the following features:
 
 ![Custom list character demo](./docs/images/custom_list_character_demo.gif "Formatting and making bullet lists with the character")
 
-## Install the plugin
+## 3. Install the plugin
 
-### Installatin through Obsidian
+### 3.1. Installatin through Obsidian
 
 To install the plugin from Obsidian, follow these steps:
 
@@ -38,7 +49,7 @@ To install the plugin from Obsidian, follow these steps:
 7. Come back to `Settings > Community plugins`
 8. Refresh you plugins and activate `Custom list character`
 
-### Manual installation
+### 3.2. Manual installation
 
 To install the plugin, follow these steps:
 
@@ -49,12 +60,25 @@ To install the plugin, follow these steps:
 4. Go to `Settings > Community plugins`
 5. Refresh you plugins and activate `Custom list character`
 
-## Help on the project
+### 3.3. Mobile set up
+
+You can also use `Custom list character` on mobile! To do so, here are the ewtra steps to follow:
+
+1. Install and activate `Custom list character`
+2. Choose the character you want to use in the settings
+3. While editing a document:
+   1. In your toolbar, click on the icon to edit it (![Wrench icon](docs/images/icon_wrench.svg))
+   2. Click configure and search for `Custom list character`
+   3. Select `Custom list character: Toggle or format bullet list`, it will add the command to the toolbar icons
+   4. Remove the `Toggle bullet list` icon (![List icon](docs/images/icon_list.svg)) from the toolbar
+   5. Add the `Custom list character: Toggle or format bullet list` icon (![List icon](docs/images/icon_list.svg)) to the toolbar
+
+## 4. Help on the project
 
 Any help is welcome!
 
 If you want to help me improve the plugin, please fork the project and make a pull request. Do not hesitate to ask features.
 
-## Author
+## 5. Author
 
 * Lilian POULIQUEN – [@lilian-pouliquen on GitHub](https://github.com/lilian-pouliquen/)
