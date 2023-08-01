@@ -1,4 +1,4 @@
-import { App, Editor, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import { App, Editor, setIcon, Plugin, PluginSettingTab, Setting } from 'obsidian';
 
 interface CustomListCharacterSettings {
     listCharacter: string;
@@ -16,8 +16,9 @@ export default class CustomListCharacterPlugin extends Plugin {
 
         // Add an editor command that adds the custom list character befor each line of the selection
         this.addCommand({
-            id: 'toggle-or-format-bullet-list',
-            name: 'Toggle or format bullet list',
+            id: "toggle-or-format-bullet-list",
+            name: "Toggle or format bullet list",
+            icon: "list",
             editorCallback: (editor: Editor) => {
                 this.setBulletList(editor)
             }
