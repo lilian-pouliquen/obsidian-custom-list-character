@@ -1,4 +1,4 @@
-import { App, Editor, setIcon, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import {App, Editor, Plugin, PluginSettingTab, Setting} from 'obsidian';
 
 interface CustomListCharacterSettings {
     listCharacter: string;
@@ -46,30 +46,14 @@ export default class CustomListCharacterPlugin extends Plugin {
 
         // Cleaning the selection
         let selection = editor.getSelection().split('\n');
-        selection = this.trimLines(selection);
 
-        // Check if selection is already a well formated bullet list
+        // Check if selection is already a well formatted bullet list
         // If true, remove the bullet list
         // Else, format the selection to make a bullet list with the custom character
-        if (this.isBulletList(selection)) {
-            for (let line of selection) {
-                if (line != "") {
-                    line = line.substring(2);
-                }
-                processedSelection += line + '\n';
-            }
-        }
-        else {
-            for (let line of selection) {
-                if (line.startsWith("- ") || line.startsWith("* ") || line.startsWith("+ ")) {
-                    line = line.substring(2);
-                }
-                if (line != "") {
-                    processedSelection += this.settings.listCharacter + ' ' + line + '\n';
-                } else {
-                    processedSelection += line + '\n';
-                }
-            }
+        if (this.isFormattedBulletList(selection)) {
+            processedSelection = this.unsetBulletList(selection);
+        } else {
+            processedSelection = this.formatSelection(selection);
         }
 
         // Remove extra new line
@@ -86,27 +70,69 @@ export default class CustomListCharacterPlugin extends Plugin {
         const selectionBeginLine = editor.getCursor("from").line;
         const selectionEndLine = editor.getCursor("to").line;
         const endLineLength = editor.getLine(selectionEndLine).length;
-        return { begin: { ch: 0, line: selectionBeginLine }, end: { ch: endLineLength, line: selectionEndLine } };
+        return {begin: {ch: 0, line: selectionBeginLine}, end: {ch: endLineLength, line: selectionEndLine}};
     }
 
-    // Trim all lines
-    private trimLines(selection: Array<string>) {
-        const trimedSelection = [];
-        for (const line of selection) {
-            trimedSelection.push(line.trim());
-        }
-        return trimedSelection;
-    }
-
-    // Check if all selected lines start with the custom character or is an empty line
-    private isBulletList(selection: Array<string>) {
+    // Check if all selected lines are formatted with the custom character or are an empty line
+    private isFormattedBulletList(selection: Array<string>) {
         let customListCharacterCount = 0;
+        const regexWellFormatted = new RegExp("^ *\\" + this.settings.listCharacter + " .*$");
         for (const line of selection) {
-            if (line.startsWith(this.settings.listCharacter + ' ') || line == "") {
+            if (regexWellFormatted.test(line) || line == "") {
                 customListCharacterCount++
             }
         }
         return selection.length == customListCharacterCount;
+    }
+
+    // Remove the bullet list character from the lines of the selected bullet list
+    // Note: it keeps indentation
+    private unsetBulletList(selection: Array<string>) {
+        let startPos = 0
+        let processedSelection = "";
+        for (let line of selection) {
+            if (line != "") {
+                startPos = line.indexOf(this.settings.listCharacter)
+                line = " ".repeat(startPos) + line.substring(startPos + 2);
+            }
+            processedSelection += line + '\n';
+        }
+        return processedSelection;
+    }
+
+    // Format all selected lines to make a bullet list with the custom character
+    // Note: it keeps indentation
+    private formatSelection(selection: Array<string>) {
+        let formattedSelection = "";
+        let startPos = 0;
+        const regexDashFormat = new RegExp("^ *\\- .*$");
+        const regexAsteriskFormat = new RegExp("^ *\\* .*$");
+        const regexPlusFormat = new RegExp("^ *\\+ .*$");
+
+        for (let line of selection) {
+            let characterToSearch = '';
+            if (regexDashFormat.test(line)) {
+                characterToSearch = '-';
+            }
+
+            if (regexAsteriskFormat.test(line)) {
+                characterToSearch = '*';
+            }
+
+            if (regexPlusFormat.test(line)) {
+                characterToSearch = '+';
+            }
+
+            if (characterToSearch != '') {
+                startPos = line.indexOf(characterToSearch)
+                line = " ".repeat(startPos) + this.settings.listCharacter + line.substring(startPos + 1);
+            } else {
+                startPos = line.search(/\S/);
+                line = " ".repeat(startPos) + this.settings.listCharacter + ' ' + line.substring(startPos);
+            }
+            formattedSelection += line + '\n';
+        }
+        return formattedSelection;
     }
 }
 
@@ -119,7 +145,7 @@ class CustomListCharacterSettingTab extends PluginSettingTab {
     }
 
     display(): void {
-        const { containerEl } = this;
+        const {containerEl} = this;
 
         containerEl.empty();
 
