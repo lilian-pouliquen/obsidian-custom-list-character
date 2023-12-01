@@ -2,10 +2,12 @@ import {App, Editor, Plugin, PluginSettingTab, Setting} from 'obsidian';
 
 interface CustomListCharacterSettings {
     listCharacter: string;
+    keepIndentation: boolean;
 }
 
 const DEFAULT_SETTINGS: CustomListCharacterSettings = {
-    listCharacter: '-'
+    listCharacter: '-',
+    keepIndentation: true
 }
 
 export default class CustomListCharacterPlugin extends Plugin {
@@ -46,6 +48,9 @@ export default class CustomListCharacterPlugin extends Plugin {
 
         // Cleaning the selection
         let selection = editor.getSelection().split('\n');
+        if (! this.settings.keepIndentation) {
+            selection = this.trimSelection(selection);
+        }
 
         // Check if selection is already a well formatted bullet list
         // If true, remove the bullet list
@@ -134,6 +139,16 @@ export default class CustomListCharacterPlugin extends Plugin {
         }
         return formattedSelection;
     }
+
+    //Trim all selected lines before formatting
+    private trimSelection(selection: Array<string>) {
+        const trimmedSelection = new Array<string>();
+
+        for (const line of selection) {
+            trimmedSelection.push(line.trim());
+        }
+        return trimmedSelection;
+    }
 }
 
 class CustomListCharacterSettingTab extends PluginSettingTab {
@@ -159,6 +174,16 @@ class CustomListCharacterSettingTab extends PluginSettingTab {
                 .setValue(this.plugin.settings.listCharacter)
                 .onChange(async (value) => {
                     this.plugin.settings.listCharacter = value;
+                    await this.plugin.saveSettings();
+                }));
+
+        new Setting(containerEl)
+            .setName('Keep indentation')
+            .setDesc('Keep indentation while formatting or unformatting')
+            .addToggle(toggle => toggle
+                .setValue(this.plugin.settings.keepIndentation)
+                .onChange(async (value) => {
+                    this.plugin.settings.keepIndentation = value;
                     await this.plugin.saveSettings();
                 }));
     }
